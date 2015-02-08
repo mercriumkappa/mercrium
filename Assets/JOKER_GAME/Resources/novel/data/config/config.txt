@@ -27,9 +27,18 @@ seVolume=10
 ;glyph=glyph_default 
 
 
+;add something here for type 1
+
+
+;add something for dev-type1
 
 
 width=“gagaga”
 height=“wwwww”
 
-; test
+
+
+;add something for develop
+;edit this file on browser
+
+
