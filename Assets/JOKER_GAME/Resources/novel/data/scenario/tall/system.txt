@@ -1,0 +1,76 @@
+
+*system_setting_buttons
+
+
+
+@image_new name="button_menu" tag="message_button" x=2.02 y=4.12 scale=0.5 sort=5 layer=ui storage="menu" 
+
+@image_new name="button_save" tag="message_button" x=3.86 y=3.5 scale=1.4 sort=5 layer=ui storage="save" 
+@image_new name="button_load" tag="message_button" x=3.86 y=2.7 scale=1.4 sort=5 layer=ui storage="load" 
+@image_new name="button_skip" tag="message_button" x=3.86 y=1.9 scale=1.4 sort=5 layer=ui storage="skip" 
+@image_new name="button_auto" tag="message_button" x=3.86 y=1.1 scale=1.4 sort=5 layer=ui storage="auto" 
+@image_new name="button_log" tag="message_button" x=3.86 y=0.3 scale=1.4 sort=5 layer=ui storage="log" 
+
+;@image_new name="button_title" tag="message_button" x=6.5 y=-3.25 sort=5 layer=ui storage="title" 
+;@image_new name="button_config" tag="message_button" x=6.5 y=-3.75 sort=5 layer=ui storage="config" 
+
+;_sp_button_close は特別な意味を持つ名前。close 機能が自動的に付与される
+@image_new name="_sp_button_close" tag="message_button" x=2.22 y=-1.56 sort=5 scale=1.0 layer=ui storage="close" 
+
+@image_show tag="message_button" time=0
+
+[evt tag="message_button" act="click" target="*click_system_button" ]
+
+[flag exp="f.is_show=0"]
+
+[return]
+
+
+*click_system_button
+
+[if exp="{evt.caller_name}==button_save"]
+	@sleepgame file="tall/libs/save" target="*savestart"
+[elsif exp="{evt.caller_name}==button_load"]
+	@sleepgame file="tall/libs/save" target="*loadstart"
+[elsif exp="{evt.caller_name}==button_auto"]
+;autoの時間はコンフィグなどで設定できる
+	[autostart]
+[elsif exp="{evt.caller_name}==button_skip"]
+	[skipstart]
+[elsif exp="{evt.caller_name}==button_title"]
+	;タイトルへ戻る
+[elsif exp="{evt.caller_name}==button_config"]
+	@sleepgame file="tall/libs/config"
+[elsif exp="{evt.caller_name}==button_log"]
+	[evt_stop]
+	@hidemessage
+	@showlog
+	@showmessage
+
+[elsif exp="{evt.caller_name}==button_menu"]
+	;たて型の場合は開閉式のメニューボタン
+	[calc exp="tmp.anim_x =3.86"]
+
+	[if exp="{f.is_show} == 0"]
+		[flag exp="f.is_show=1"]
+		[calc exp="tmp.anim_x = 1.86"]
+
+	[else]
+		[flag exp="f.is_show=0"]
+		[calc exp="tmp.anim_x = 3.86"]
+
+	[endif]
+
+	@anim name="button_save" wait=false time="0.5" x="{tmp.anim_x}" 
+	@anim name="button_load" wait=false time="0.5" x="{tmp.anim_x}" 
+	@anim name="button_skip" wait=false time="0.5" x="{tmp.anim_x}" 
+	@anim name="button_auto" wait=false time="0.5" x="{tmp.anim_x}" 
+	@anim name="button_log"  wait=false time="0.5" x="{tmp.anim_x}" 
+
+
+[endif]
+
+[evt_resume]
+
+[jump file={evt.caller_file} index={evt.caller_index} next=false ]
+
